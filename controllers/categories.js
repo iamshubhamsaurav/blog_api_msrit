@@ -48,8 +48,7 @@ exports.getSingleCategory = async(req, res) => {
         if(!result) {
             res.status(404).json({
                 success: false,
-                message: "Category not found",
-                error: error
+                message: "Category not found"
             })
         }
 
@@ -69,7 +68,18 @@ exports.getSingleCategory = async(req, res) => {
 exports.deleteCategory = async(req, res) => {
     
     try {
-        const result = await Category.findByIdAndDelete(req.params.id)
+        let result;
+        
+        result = await Category.findById(req.params.id)
+
+        if(!result) {
+            res.status(404).json({
+                success: false,
+                message: "Category not found"
+            })
+        }
+        
+        result = await Category.findByIdAndDelete(req.params.id)
         res.status(200).json({
             success: true,
             message:  `Category with the ${req.params.id} was deleted`,
@@ -86,7 +96,18 @@ exports.deleteCategory = async(req, res) => {
 
 exports.updateCategory = async (req, res) => {
     try {
-        const result = await Category.findByIdAndUpdate(
+        let result;
+
+        result = await Category.findById(req.params.id)
+
+        if(!result) {
+            res.status(404).json({
+                success: false,
+                message: "Category not found"
+            })
+        }
+
+        result = await Category.findByIdAndUpdate(
             req.params.id,
             req.body,
             {

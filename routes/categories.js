@@ -14,7 +14,7 @@ const {
 // /categories
 router.get("/", getAllCategories)
 
-// /categories/
+// /categories/1
 router.post("/", createCategory)
 
 router.get("/:id", getSingleCategory)
