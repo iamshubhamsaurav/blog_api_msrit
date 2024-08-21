@@ -26,6 +26,10 @@ const blogSchema = mongoose.Schema({
     },
     hashtag: {
         type: String
+    }, categoryId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category',
+        required: [true, "Please provide the categoryId"]
     }
 }, {
     timestamps: true

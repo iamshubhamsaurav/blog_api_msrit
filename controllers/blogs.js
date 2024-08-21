@@ -120,7 +120,7 @@ exports.deleteBlog = async(req, res) => {
             message: "Blog was deleted",
             blog: result
         })
-        
+
     } catch (error) {
         res.status(400).json(
             {
