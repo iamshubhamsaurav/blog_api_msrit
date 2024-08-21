@@ -10,6 +10,7 @@ connectDB()
 const app = express()
 
 const categoryRoute = require('./routes/categories')
+const blogRoute = require('./routes/blogs')
 
 // allows our app to read the body of the request
 app.use(express.json())
@@ -18,7 +19,7 @@ app.use(express.json())
 // /categories is the base url
 
 app.use('/categories', categoryRoute)
-
+app.use('/blogs', blogRoute)
 
 // --   /categories/
 // --   /categories/kdhfkjdshkjfhk
