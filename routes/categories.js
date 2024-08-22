@@ -1,5 +1,7 @@
 const express = require('express')
 
+const blogRoute = require('./blogs')
+
 const router = express.Router()
 
 // const categoryController = require('../controllers/categories')
@@ -10,6 +12,10 @@ const {
     updateCategory,
     deleteCategory
 } = require('../controllers/categories')
+
+// /categories/:categoryId/blogs
+router.use('/:categoryId/blogs', blogRoute)
+
 
 // /categories
 router.get("/", getAllCategories)

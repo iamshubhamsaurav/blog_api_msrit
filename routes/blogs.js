@@ -8,7 +8,11 @@ const {
     deleteBlog
 } = require('../controllers/blogs')
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
+// base urls
+// /categories/:categoryId/blogs/
+// /blogs/
+
 
 router
     .route('/')
@@ -16,6 +20,7 @@ router
     .get(getAllBlogs)
     
 // /blogs/232frdf
+// /categories/:categoryId/blogs/dhkgjik3
 router
     .route('/:id')
     .get(getSingleBlog)
