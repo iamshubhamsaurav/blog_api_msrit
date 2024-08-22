@@ -1,5 +1,6 @@
 
 const Category = require('../models/Category')
+const Blog = require('../models/Blog')
 
 
 exports.createCategory = async (req, res) => {
@@ -78,7 +79,12 @@ exports.deleteCategory = async(req, res) => {
                 message: "Category not found"
             })
         }
-        
+
+        // result is the category and it has the  id
+        // cascade delete 
+        // we should delete all the child blogs of this category first
+        await Blog.deleteMany({ categoryId: result._id })
+
         result = await Category.findByIdAndDelete(req.params.id)
         res.status(200).json({
             success: true,
