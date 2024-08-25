@@ -2,6 +2,29 @@
 const Category = require('../models/Category')
 const Blog = require('../models/Blog')
 
+// // real world use of middleware
+
+// exports.checkIfCategoryExists = async (req, res, next) => {
+//     console.log("checkIfCategoryExists called");
+    
+//     const category = await Category.findById(req.params.id)
+
+//     if(!category) {
+//         console.log("Catgory not found -- in checkIfCategoryExists");
+        
+//         return res.status(404).json({
+//             success: false,
+//             message: "Category not found"
+//         })
+//     }
+
+//     // category found
+//     req.data = category
+//     next()
+
+
+// }
+
 
 exports.createCategory = async (req, res) => {
     try {
