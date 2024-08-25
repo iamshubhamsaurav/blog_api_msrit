@@ -1,5 +1,6 @@
 const express = require('express')
 const connectDB = require('./db')
+const morgan = require('morgan')
 
 
 // const Category = require('./models/Category')
@@ -11,6 +12,9 @@ const app = express()
 
 const categoryRoute = require('./routes/categories')
 const blogRoute = require('./routes/blogs')
+
+
+app.use(morgan('dev'))
 
 // allows our app to read the body of the request
 app.use(express.json())
