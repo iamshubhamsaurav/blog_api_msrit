@@ -1,17 +1,15 @@
 const Blog = require('../models/Blog')
 const Category = require('../models/Category')
+const AppError = require('../utils/AppError')
 
 // /categories/:categoryId/blogs
-exports.createBlog = async (req, res) => {
+exports.createBlog = async (req, res, next) => {
     try {
 
         const category = await Category.findById(req.params.categoryId)
 
         if(!category) {
-            res.status(404).json({
-                success: false,
-                message: "category not found" 
-            })
+            return next(new AppError(404, 'Category not found'))
         }
 
         req.body.categoryId = category._id;
@@ -23,18 +21,12 @@ exports.createBlog = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error
-            }
-        )
+        next(error)
     }
 }
 // /blogs
 // /categories/:categoryId/blogs
-exports.getAllBlogs = async (req, res) => {
+exports.getAllBlogs = async (req, res, next) => {
     try {
         let result;
 
@@ -51,25 +43,18 @@ exports.getAllBlogs = async (req, res) => {
             blogs: result
         })
     } catch (error) {
-        res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error
-            }
-        )
+        next(error)
     }
 }
 
 // blogs/:id
-exports.getSingleBlog = async(req, res) => {
+exports.getSingleBlog = async(req, res, next) => {
     try {
         const result = await Blog.findById(req.params.id);
+        console.log(result);
+        
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Blog not found" 
-            })
+            return next(new AppError(404, "Blog not found"))
         }
 
         res.status(200).json({
@@ -78,25 +63,16 @@ exports.getSingleBlog = async(req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error
-            }
-        )
+        next(error)
     }
 }
 
 
-exports.updateBlog = async (req, res) => {
+exports.updateBlog = async (req, res, next) => {
     try {
         let result = await Blog.findById(req.params.id);
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Blog not found" 
-            })
+            return next(new AppError(404, "Blog not found"))
         }
 
         result = await Blog.findByIdAndUpdate(
@@ -115,24 +91,15 @@ exports.updateBlog = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error
-            }
-        )
+        next(error)
     }
 }
 
-exports.deleteBlog = async(req, res) => {
+exports.deleteBlog = async(req, res, next) => {
     try {
         let result = await Blog.findById(req.params.id);
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Blog not found" 
-            })
+            return next(new AppError(404, "Blog not found"))
         }
 
         result = await Blog.findByIdAndDelete(req.params.id)
@@ -144,12 +111,6 @@ exports.deleteBlog = async(req, res) => {
         })
 
     } catch (error) {
-        res.status(400).json(
-            {
-                success: false,
-                message: error.message,
-                error
-            }
-        )
+        next(error)
     }
 }

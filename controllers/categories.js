@@ -1,6 +1,10 @@
 
 const Category = require('../models/Category')
 const Blog = require('../models/Blog')
+const AppError = require('../utils/AppError')
+
+const asyncHandler = require('../middleware/asyncHandler')
+
 
 // // real world use of middleware
 
@@ -26,81 +30,55 @@ const Blog = require('../models/Blog')
 // }
 
 
-exports.createCategory = async (req, res) => {
-    try {
+// module.exports = (fn) => {
+//     return (req, res, next) => {
+//         fn(req, res, next).catch(next);
+//     }
+// }
+
+exports.createCategory = asyncHandler(async (req, res, next) => {
         const cat = await Category.create(req.body)
         res.status(201).json({
             success: true,
             category: cat
         })
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Something went wrong",
-            error: error
-        })
-    }    
-}
+})
 
 
-exports.getAllCategories = async(req, res) => {
-
-    try {
+exports.getAllCategories = asyncHandler(async(req, res, next) => {
         const categories = await Category.find()
         res.status(200).json({
             success: true,
             count: categories.length,
             categories
         })
-
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Something went wrong",
-            error: error
-        })
-    }
-}
+})
 
 // /categories/:id
 
 // /categories/1dnjfjkj
-exports.getSingleCategory = async(req, res) => {
-    try {
+exports.getSingleCategory = asyncHandler(async(req, res, next) => {
+
         const result = await Category.findById(req.params.id)
 
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Category not found"
-            })
+           return next(new AppError(404, 'Category not found'))
         }
 
         res.status(200).json({
             success: true,
             category: result
         })
-    } catch (error) {
-        res.status(404).json({
-            success: false,
-            message: "Something went wrong",
-            error: error
-        })
-    }
-}
 
-exports.deleteCategory = async(req, res) => {
-    
-    try {
+})
+
+exports.deleteCategory = asyncHandler(async(req, res, next) => {
         let result;
         
         result = await Category.findById(req.params.id)
 
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Category not found"
-            })
+            return next(new AppError(404, "Category not found"))
         }
 
         // result is the category and it has the  id
@@ -114,26 +92,16 @@ exports.deleteCategory = async(req, res) => {
             message:  `Category with the ${req.params.id} was deleted`,
             category: result
         })
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Something went wrong!",
-            error: error
-        })
-    }
-}
+  
+})
 
-exports.updateCategory = async (req, res) => {
-    try {
+exports.updateCategory = asyncHandler(async (req, res, next) => {
         let result;
 
         result = await Category.findById(req.params.id)
 
         if(!result) {
-            res.status(404).json({
-                success: false,
-                message: "Category not found"
-            })
+            return next(new AppError(404, "Category not found"))
         }
 
         result = await Category.findByIdAndUpdate(
@@ -150,11 +118,5 @@ exports.updateCategory = async (req, res) => {
             category: result
         })
         
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: "Something went wrong!",
-            error: error
-        })
-    }
-}
+
+})

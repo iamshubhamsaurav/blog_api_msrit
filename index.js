@@ -14,6 +14,9 @@ const categoryRoute = require('./routes/categories')
 const blogRoute = require('./routes/blogs')
 
 
+const errorHandler = require('./middleware/errorHandler')
+
+
 app.use(morgan('dev'))
 
 // allows our app to read the body of the request
@@ -24,6 +27,8 @@ app.use(express.json())
 
 app.use('/categories', categoryRoute)
 app.use('/blogs', blogRoute)
+
+app.use(errorHandler)
 
 // --   /categories/
 // --   /categories/kdhfkjdshkjfhk
