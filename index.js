@@ -2,8 +2,11 @@ const express = require('express')
 const connectDB = require('./db')
 const morgan = require('morgan')
 
+const dotenv = require('dotenv')
+dotenv.config() // load env to the server
 
 // const Category = require('./models/Category')
+
 
 
 connectDB()
@@ -25,8 +28,11 @@ app.use(express.json())
 
 // /categories is the base url
 
-app.use('/categories', categoryRoute)
-app.use('/blogs', blogRoute)
+// /api/categories
+// /api/v1/categories
+// /api/v3/categories
+app.use('/api/categories', categoryRoute)
+app.use('/api/blogs', blogRoute)
 
 app.use(errorHandler)
 
@@ -85,7 +91,7 @@ app.all("*", (req, res) => {
 
 
 
-const PORT = 4000
+const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
-    console.log("Listening to server on port 4000");  
+    console.log(`Listening to server on port ${PORT}`);  
 })
