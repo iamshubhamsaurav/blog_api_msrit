@@ -30,6 +30,14 @@ app.use('/blogs', blogRoute)
 
 app.use(errorHandler)
 
+// handle generic 404 page not found here
+app.all("*", (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: "Page Not Found!"
+    })
+})
+
 // --   /categories/
 // --   /categories/kdhfkjdshkjfhk
 

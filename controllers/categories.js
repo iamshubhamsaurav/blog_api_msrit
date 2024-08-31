@@ -77,7 +77,7 @@ exports.deleteCategory = asyncHandler(async(req, res, next) => {
         
         result = await Category.findById(req.params.id)
 
-        if(!result) {
+        if(!result) {            
             return next(new AppError(404, "Category not found"))
         }
 
